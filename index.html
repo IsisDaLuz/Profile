@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profiles</title>
+    <style>
+        /* CSS styles for banner */
+        .banner {
+            background-color: #bee8fe;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* CSS styles for banner logo */
+        .banner img {
+            max-width: 200px; /* Adjust width as needed */
+        }
+
+        /* CSS styles for user profiles */
+        .profile {
+            border: 1px solid #95bde5;
+            border-radius: 5px;
+            margin: 20px auto;
+            max-width: 300px;
+            padding: 20px;
+        }
+
+        .profile img {
+            max-width: 100%;
+            border-radius: 50%;
+        }
+    </style>
+    <!-- Firebase JavaScript SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+        import { getDatabase, ref, child, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+            apiKey: "AIzaSyCd7EatMSvaTwyw0O3rY_QX7_ggWUCK-fY",
+            authDomain: "profileapp-cab00.firebaseapp.com",
+            databaseURL: "https://profileapp-cab00-default-rtdb.firebaseio.com",
+            projectId: "profileapp-cab00",
+            storageBucket: "profileapp-cab00.appspot.com",
+            messagingSenderId: "569025195254",
+            appId: "1:569025195254:web:f9d5b2b6df7a40335450d7",
+            measurementId: "G-Z1EQQ8YKMY"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+
+        // Function to fetch and display user profiles
+        async function displayUserProfiles() {
+            const database = getDatabase();
+            const user1Ref = ref(database, 'XH74hQt0ArcnuoroWem9AxOFeKn2');
+            const user2Ref = ref(database, 'z6nBiDJEuaZwFOaOeaWjVYP8KCn2');
+
+            try {
+                const user1Snapshot = await get(child(user1Ref, '/'));
+                const user2Snapshot = await get(child(user2Ref, '/'));
+                
+                if (user1Snapshot.exists()) {
+                    const user1 = user1Snapshot.val();
+                    const user1Container = document.createElement('div');
+                    user1Container.classList.add('profile');
+                    user1Container.innerHTML = `
+                        <h2>${user1.name} Profile</h2>
+                        <div>Bio: ${user1.bio}</div>
+                        <div>Image: <img src="${user1.image}" alt="${user1.name}"></div>
+                        
+                    `;
+                    document.body.appendChild(user1Container);
+                } else {
+                    console.log('User 1 data not available');
+                }
+                
+                if (user2Snapshot.exists()) {
+                    const user2 = user2Snapshot.val();
+                    const user2Container = document.createElement('div');
+                    user2Container.classList.add('profile');
+                    user2Container.innerHTML = `
+                        <h2>${user2.name} Profile</h2>
+                        <div>Bio: ${user2.bio}</div>
+                        <div>Image: <img src="${user2.image}" alt="${user2.name}"></div>
+                    `;
+                    document.body.appendChild(user2Container);
+                } else {
+                    console.log('User 2 data not available');
+                }
+            } catch (error) {
+                console.error('Error fetching user profiles:', error);
+            }
+        }
+
+        // Call the function to display user profiles
+        displayUserProfiles();
+    </script>
+</head>
+<body>
+    <!-- Banner with logo -->
+    <div class="banner">
+        <img src="logo.png" alt="Your Logo">
+    </div>
+    <h1>Profile App</h1>
+    <iframe src="https://thunkable.site/w/HxeoykK7ZIKl3ueoAKaQZ" title="Profile App" height="1000" width="500"></iframe>
+</body>
+</html>
